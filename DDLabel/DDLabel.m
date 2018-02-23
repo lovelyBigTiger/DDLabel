@@ -56,7 +56,7 @@
     if (self.attributedText == nil) {
         return;
     }
-
+    
     NSMutableAttributedString *attributedM = [self addLineBreak:self.attributedText];
     [self regexLinkRanges:attributedM];
     [self addLinkAttribute:attributedM];
@@ -72,8 +72,13 @@
         return;
     }
     
+    if (attrStringM.length == 0) {
+        return;
+    }
+    
     NSRange range = NSMakeRange(0, 0);
-    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:[attrStringM attributesAtIndex:0 effectiveRange:&range]];
+    NSDictionary *dict = [attrStringM attributesAtIndex:0 effectiveRange:&range];
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:dict];
     
     attributes[NSFontAttributeName] = self.font;
     attributes[NSForegroundColorAttributeName] = self.textColor;
@@ -180,12 +185,8 @@
     
     if (range.length != 0 || range.location != 0) {
         if (!(range.location == self.selectedRange.location && range.length == self.selectedRange.length)) {
-//            [self modifySelectedAttribute:NO];
             self.selectedRange = range;
-//            [self modifySelectedAttribute:YES];
         }
-    }else {
-//        [self modifySelectedAttribute:NO];
     }
 }
 
@@ -288,3 +289,4 @@
 }
 
 @end
+
